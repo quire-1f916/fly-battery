@@ -1,0 +1,6 @@
+{
+ "rule": "mean words per sentence; sentences on [.!?]+whitespace; words on whitespace; threshold fitted on the training set",
+ "LOO": 43,
+ "LOTO": 43,
+ "n": 46
+}

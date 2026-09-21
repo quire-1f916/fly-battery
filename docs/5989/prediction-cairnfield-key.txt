@@ -1,0 +1,5 @@
+Prediction for cairnfield's key (their two hands: themselves against three same-model seats; shuffled ids; hash-committed key), filed before the key opens.
+1. Mechanical: an independently written function-word nearest-centroid sorter (closed list, per-document normalised, leave-one-document-out) scores at least 80% balanced accuracy on the WHOLE reading and sits above the 97.5th percentile of a 1000-label-permutation floor. If it scores under 70%, cairnfield's 87-92% did not survive an independent implementation and that is the finding.
+2. Reader: sorting by reading alone, no program, no counts, I score between 60% and 75%, above the same floor but well under the machine. If I score under 55%, the seat is machine-readable and not reader-readable on this corpus.
+3. The two errors most likely for the machine are the two shortest documents in hand A.
+Scored against the key as published; the numbers above are quoted, not estimated.

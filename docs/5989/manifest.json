@@ -1,0 +1,375 @@
+{
+ "corpus": "#4312 blind sort, quire seat",
+ "key_published": "c59834 (2026-09-14)",
+ "seam": "hand A = 23 lowest ids (<= c41072, before 2026-09-04T12:28Z), hand B = 23 highest (>= c41559, after 21:01Z)",
+ "rows": [
+  {
+   "id": 38361,
+   "hand": "A",
+   "post_id": 2730,
+   "created_at": 1788395995740,
+   "body_sha256": "2cfda55cc26009da584348416089b366e743b70de17697706b933d5ca06019b4",
+   "chars": 1317
+  },
+  {
+   "id": 38554,
+   "hand": "A",
+   "post_id": 2730,
+   "created_at": 1788400572154,
+   "body_sha256": "297f9880e187ca5cb1c832f75fc86f559b85192718fa4f149b27185860dc2c50",
+   "chars": 1123
+  },
+  {
+   "id": 38567,
+   "hand": "A",
+   "post_id": 3659,
+   "created_at": 1788401070246,
+   "body_sha256": "ca14c2b64b9e73b9a715263a855e3b370c22d25cedf1d7dea375c7cc05d7f79e",
+   "chars": 654
+  },
+  {
+   "id": 38679,
+   "hand": "A",
+   "post_id": 3664,
+   "created_at": 1788403599735,
+   "body_sha256": "32432d22d1939b7b5a499e5b1f3727c4cb7664dc58818ea0f75ac5ce66f35598",
+   "chars": 1770
+  },
+  {
+   "id": 38897,
+   "hand": "A",
+   "post_id": 3673,
+   "created_at": 1788413095678,
+   "body_sha256": "6abf34b61266adb9aa7577c507e7e4968552cc0ef066ca44f276f32f0992a5c7",
+   "chars": 1376
+  },
+  {
+   "id": 38898,
+   "hand": "A",
+   "post_id": 3680,
+   "created_at": 1788413119022,
+   "body_sha256": "c320c278aed79c47b67e32642cfa44d0353a597a5cd2f748dc22d206b5ac6598",
+   "chars": 2379
+  },
+  {
+   "id": 39244,
+   "hand": "A",
+   "post_id": 3673,
+   "created_at": 1788427217399,
+   "body_sha256": "b1a1f3f1b8de6054e418dd33a06826a15f968e238c7198bfe3222e9cd2a78ef4",
+   "chars": 1630
+  },
+  {
+   "id": 39245,
+   "hand": "A",
+   "post_id": 3659,
+   "created_at": 1788427220573,
+   "body_sha256": "e0c30bda4cd86207f017dfce7a7971d8ed16d9ddae90fb7b05984bf40e00b965",
+   "chars": 1168
+  },
+  {
+   "id": 39246,
+   "hand": "A",
+   "post_id": 3702,
+   "created_at": 1788427223527,
+   "body_sha256": "e20f6f09c0361630ae68e5075723c7b3daa6718828d103c8fa1fb7e3c41ae67d",
+   "chars": 2
+  },
+  {
+   "id": 39551,
+   "hand": "A",
+   "post_id": 3732,
+   "created_at": 1788445825552,
+   "body_sha256": "940cb73b1f9d278f7318c313592b3ecaba3f443efdbfab678bdb51b27a31af1c",
+   "chars": 2929
+  },
+  {
+   "id": 39552,
+   "hand": "A",
+   "post_id": 3304,
+   "created_at": 1788445854218,
+   "body_sha256": "28af9fe1ece6bc02ddf24e1ec38a44103b111c7d6d19fb6e6ba43c4593c92f2c",
+   "chars": 1444
+  },
+  {
+   "id": 40250,
+   "hand": "A",
+   "post_id": 3773,
+   "created_at": 1788488528936,
+   "body_sha256": "e16bebb68c29a92b1d2e0119e06e49f10606903808049ad54736261014de25ae",
+   "chars": 269
+  },
+  {
+   "id": 40251,
+   "hand": "A",
+   "post_id": 2730,
+   "created_at": 1788488555362,
+   "body_sha256": "83bfe46f4de0f64acefd1c096bca20aabd178333ad244c90d78408aa97acd5a6",
+   "chars": 782
+  },
+  {
+   "id": 40313,
+   "hand": "A",
+   "post_id": 3738,
+   "created_at": 1788491001107,
+   "body_sha256": "050b838e3ae89eb0e1b17c3c24adfeaa66673b04d0f3901779cfcd7632bbb2f6",
+   "chars": 1245
+  },
+  {
+   "id": 40314,
+   "hand": "A",
+   "post_id": 3780,
+   "created_at": 1788491004084,
+   "body_sha256": "dd58233ec62b36b0646fa62ad6afe1d9876e1ed125021efea0bc7d58b015ed04",
+   "chars": 1223
+  },
+  {
+   "id": 40315,
+   "hand": "A",
+   "post_id": 3741,
+   "created_at": 1788491007057,
+   "body_sha256": "1b15e7e62c29798b7411dc7897a8d22559b7181ef6382b3505cb4e7afcc89048",
+   "chars": 1466
+  },
+  {
+   "id": 40316,
+   "hand": "A",
+   "post_id": 3759,
+   "created_at": 1788491010053,
+   "body_sha256": "2b049d9e42fc61a7848314f67fddaaae13711eaa86ef0c64fb6e2afd358de377",
+   "chars": 1220
+  },
+  {
+   "id": 40317,
+   "hand": "A",
+   "post_id": 3765,
+   "created_at": 1788491030432,
+   "body_sha256": "8475bea8900ff70a52c4201f61441c4fb9d87c0f16c02fd7cea70ff4982e9285",
+   "chars": 1134
+  },
+  {
+   "id": 41068,
+   "hand": "A",
+   "post_id": 3759,
+   "created_at": 1788524870649,
+   "body_sha256": "1bdf5b27d2059f05b1eb239fdc75ff1f8270e41cc6791deeafff5caed6fa1a92",
+   "chars": 1096
+  },
+  {
+   "id": 41069,
+   "hand": "A",
+   "post_id": 3793,
+   "created_at": 1788524873728,
+   "body_sha256": "4e2f9ceceed1b3e30c419171cc9421b1369f50f830f0f15eea153a0292a581f7",
+   "chars": 1364
+  },
+  {
+   "id": 41070,
+   "hand": "A",
+   "post_id": 3801,
+   "created_at": 1788524876669,
+   "body_sha256": "e0c5a43da9dfabddfda5167d6ec28858e231b0cbaf0d721aa421e07efdb80c2e",
+   "chars": 1237
+  },
+  {
+   "id": 41071,
+   "hand": "A",
+   "post_id": 3797,
+   "created_at": 1788524879570,
+   "body_sha256": "124984b2a9fa5701eb3aa28160238bd3c2ca642d4a795fc8e36fca13d27c82a7",
+   "chars": 1521
+  },
+  {
+   "id": 41072,
+   "hand": "A",
+   "post_id": 3804,
+   "created_at": 1788524906786,
+   "body_sha256": "f945818a2e0f9dc8e4128f182fc9b8bf333d077bebefda727aadae88edb8a1e5",
+   "chars": 1559
+  },
+  {
+   "id": 41559,
+   "hand": "B",
+   "post_id": 3773,
+   "created_at": 1788555696094,
+   "body_sha256": "683ea148047fb5d5af1688d6236cb780f0a4d71839cb9a6b8bf5ccc9c3e06fe2",
+   "chars": 501
+  },
+  {
+   "id": 41560,
+   "hand": "B",
+   "post_id": 3304,
+   "created_at": 1788555699598,
+   "body_sha256": "87618923cfe709229963cfdcde28d9c35953e7722a029944118ef65d9486515b",
+   "chars": 1423
+  },
+  {
+   "id": 41561,
+   "hand": "B",
+   "post_id": 3879,
+   "created_at": 1788555702588,
+   "body_sha256": "7b47d9237fd0c30aad717c4d74142d14ba12fcf691569221ff0286776d1b5f16",
+   "chars": 600
+  },
+  {
+   "id": 41628,
+   "hand": "B",
+   "post_id": 3879,
+   "created_at": 1788561214484,
+   "body_sha256": "236f0c92a55f199d3abbd92e876c65358eb260b386531d7a60939667db8b63a7",
+   "chars": 863
+  },
+  {
+   "id": 41992,
+   "hand": "B",
+   "post_id": 3783,
+   "created_at": 1788572979132,
+   "body_sha256": "f718430ad790fac4d1c94ea59fa19b8327c253b31161360368af594020c68681",
+   "chars": 1206
+  },
+  {
+   "id": 41993,
+   "hand": "B",
+   "post_id": 3664,
+   "created_at": 1788572981976,
+   "body_sha256": "3e8a685d5e6287613c839a742502f71740758fdaaf3299c3ce468f66481d0659",
+   "chars": 861
+  },
+  {
+   "id": 41994,
+   "hand": "B",
+   "post_id": 3906,
+   "created_at": 1788572984835,
+   "body_sha256": "802963ab3c23eae60a5fddcad26b263ab94daf8b57b1cc17c1dbe040b805c4fb",
+   "chars": 1108
+  },
+  {
+   "id": 41996,
+   "hand": "B",
+   "post_id": 3913,
+   "created_at": 1788573609075,
+   "body_sha256": "500d199ffdcd936cc7c89438d48e8a201ecd135cc04e874f5d657c938f9dfd4f",
+   "chars": 908
+  },
+  {
+   "id": 42155,
+   "hand": "B",
+   "post_id": 3924,
+   "created_at": 1788578460038,
+   "body_sha256": "37353f281ed20cf41318281df2e36211f214143566a52eafad9d9bc86e47918e",
+   "chars": 1037
+  },
+  {
+   "id": 42156,
+   "hand": "B",
+   "post_id": 3921,
+   "created_at": 1788578462909,
+   "body_sha256": "e4a8cc3261eac30f21c2a2931bc1becbd864e1ca89923f968b07383479908fd0",
+   "chars": 601
+  },
+  {
+   "id": 42157,
+   "hand": "B",
+   "post_id": 3783,
+   "created_at": 1788578497264,
+   "body_sha256": "dd353b8a1e6e183c4a93a36082efcbbbe1431f7188149f03a31b63a89b40514e",
+   "chars": 597
+  },
+  {
+   "id": 42222,
+   "hand": "B",
+   "post_id": 3936,
+   "created_at": 1788583619269,
+   "body_sha256": "9d498e9ad72ba67126aab261f702953cb7b7c924bafd4b1b701ab6e10b823ee6",
+   "chars": 795
+  },
+  {
+   "id": 42223,
+   "hand": "B",
+   "post_id": 3932,
+   "created_at": 1788583622365,
+   "body_sha256": "1239de722a53a070d57e216dbd7d6f6b6846faaa032a55217334c61aff952c25",
+   "chars": 580
+  },
+  {
+   "id": 42224,
+   "hand": "B",
+   "post_id": 3935,
+   "created_at": 1788583625320,
+   "body_sha256": "5e89ae0eba9969d9b3a6f99eb67f2d39eb34a10cea80838b888f9ee4d10b54fe",
+   "chars": 817
+  },
+  {
+   "id": 42513,
+   "hand": "B",
+   "post_id": 3956,
+   "created_at": 1788597942300,
+   "body_sha256": "8fa54b9b94c152d2d873db002d12efc9eca4728fa1651d686f1dd96fdb4c0ff6",
+   "chars": 858
+  },
+  {
+   "id": 42514,
+   "hand": "B",
+   "post_id": 3952,
+   "created_at": 1788597945252,
+   "body_sha256": "56f5e6027c038cd19a390dbdb178d53ca7d2d20d594fc23c84bdb5a314bb8704",
+   "chars": 928
+  },
+  {
+   "id": 42515,
+   "hand": "B",
+   "post_id": 3954,
+   "created_at": 1788597948138,
+   "body_sha256": "9515341df7cf6d55278dd6be4b8a22adfb6112af87d74eb7ba54727238b518ec",
+   "chars": 682
+  },
+  {
+   "id": 42948,
+   "hand": "B",
+   "post_id": 3304,
+   "created_at": 1788619392668,
+   "body_sha256": "26d8e53a7825e262e68671b898fb0a76dad7ccbc2078f26ca3e3b269de17ac1b",
+   "chars": 1357
+  },
+  {
+   "id": 42949,
+   "hand": "B",
+   "post_id": 3982,
+   "created_at": 1788619395750,
+   "body_sha256": "67a79c5c91da27bad007ee87ad9f691f56b92ad06bbfc22cde25ba74ad7621c9",
+   "chars": 899
+  },
+  {
+   "id": 45085,
+   "hand": "B",
+   "post_id": 3936,
+   "created_at": 1788733176589,
+   "body_sha256": "5f8d1c29ed0a6d495bde39550009830297145e34d59a140ae321be417da2a9b2",
+   "chars": 614
+  },
+  {
+   "id": 45086,
+   "hand": "B",
+   "post_id": 3982,
+   "created_at": 1788733179579,
+   "body_sha256": "06a7399fa0d8935a914fe673adba7db0b34559832c6db270ad1e28f0cb75527a",
+   "chars": 913
+  },
+  {
+   "id": 45087,
+   "hand": "B",
+   "post_id": 3664,
+   "created_at": 1788733182451,
+   "body_sha256": "cdd76701f275ccf2a07cfe28b63668fe4b353bf2724bef1b71cb210aaac1a801",
+   "chars": 497
+  },
+  {
+   "id": 45088,
+   "hand": "B",
+   "post_id": 4141,
+   "created_at": 1788733185382,
+   "body_sha256": "c4ba29dcc30f8ded118ba1a43d3a86eb84b6e0a9e5a516c6539e9a0fd0d50ce6",
+   "chars": 493
+  }
+ ]
+}
