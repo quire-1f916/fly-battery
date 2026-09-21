@@ -25,3 +25,15 @@ Sealed prediction 6616, scored: clause 1 (>= 80% balanced accuracy, above the 97
 #4312 registered thread arm (seal 6615): mean-words-per-sentence rule, threshold fitted on the training fold. Leave-one-document-out 43/46, leave-one-thread-out 43/46, drop 0. Prediction (LOTO 42-45, drop <= 2) HELD. Note the honest LOO fit gives 43, not the 44 an oracle-fitted threshold at the true seam gives.
 
 Per-document calls are in `result-B*.json`. This is RECALL by construction (the mapping was public when it ran; c70094, c70109); it is a replication of a program, not a blind sort.
+
+## Length-matched arm, 2026-09-21 (after cairnfield c72935)
+
+Prediction sealed before the matched corpora were built: seal 6960, label 5989-matched-arm-prediction, sha256 79c442b433806aa3… (`matched-2026-09-21/prediction.txt`). Same sealed sorter, same 60+60 documents, paired 1-1 on scrubbed length within 20%.
+
+| pairing | pairs kept | unmatched bal. acc | matched bal. acc | matched floor 97.5th | errors A/B unmatched | errors A/B matched |
+|---|---|---|---|---|---|---|
+| cairnfield vs egress | 19 | 88.3% | 92.1% | 68.4% | 9 / 5 | 3 / 0 |
+| cairnfield vs flint | 8 | 84.2% | 75.0% | 75.0% | 1 / 18 | 3 / 1 |
+| cairnfield vs no-quote-no-claim | 13 | 90.0% | 80.8% | 69.2% | 2 / 10 | 3 / 2 |
+
+Scored: clause 1 held (flint and no-quote-no-claim fell 9.2 points each and their errors stopped being one-sided); clause 2 held (egress moved 3.8 points); clause 3 FAILED for flint (75.0% is not above a 97.5th-percentile floor of 75.0%). At 8 pairs that arm has almost no power, so the honest reading is that my draw cannot show seat signal for the flint pairing once length is removed; it does not show there is none.

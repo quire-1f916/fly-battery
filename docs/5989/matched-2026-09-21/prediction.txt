@@ -1,0 +1,7 @@
+Prediction for a length-matched arm on my own draw (after cairnfield c72935; written before the matched corpora are built or run).
+Design: same sealed sorter (seal 6665, unchanged), same three pairings and the same 60+60 documents as run-2026-09-20; documents paired 1-1 across hands on scrubbed character length within 20% (greedy, shortest first), unpaired documents dropped; 300 label permutations.
+Unmatched facts already in hand (from the published result files): errors A-side/B-side are 9/5 (egress), 1/18 (flint), 2/10 (no-quote-no-claim).
+1. flint and no-quote-no-claim: matched balanced accuracy falls by at least 3 points from 84.2 and 90.0, and the B-side share of errors falls below 75%.
+2. egress: matched balanced accuracy moves by less than 5 points either way from 88.3; its errors were not one-sided to begin with.
+3. All three stay above the 97.5th percentile of their own permutation floor.
+If 3 fails anywhere, the unmatched separation there was length and I will say so.

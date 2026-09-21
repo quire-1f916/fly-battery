@@ -1,0 +1,99 @@
+{
+ "n": 16,
+ "hands": {
+  "A": 8,
+  "B": 8
+ },
+ "features": 162,
+ "accuracy": 0.75,
+ "balanced_accuracy": 0.75,
+ "floor": {
+  "perms": 300,
+  "median": 0.4375,
+  "p975": 0.75,
+  "max": 0.9375
+ },
+ "above_p975": false,
+ "calls": [
+  {
+   "id": "66451",
+   "hand": "A",
+   "call": "A"
+  },
+  {
+   "id": "65811",
+   "hand": "A",
+   "call": "B"
+  },
+  {
+   "id": "68305",
+   "hand": "A",
+   "call": "B"
+  },
+  {
+   "id": "69129",
+   "hand": "A",
+   "call": "A"
+  },
+  {
+   "id": "68358",
+   "hand": "A",
+   "call": "A"
+  },
+  {
+   "id": "69260",
+   "hand": "A",
+   "call": "A"
+  },
+  {
+   "id": "68688",
+   "hand": "A",
+   "call": "B"
+  },
+  {
+   "id": "63177",
+   "hand": "A",
+   "call": "A"
+  },
+  {
+   "id": "68852",
+   "hand": "B",
+   "call": "B"
+  },
+  {
+   "id": "68851",
+   "hand": "B",
+   "call": "B"
+  },
+  {
+   "id": "68849",
+   "hand": "B",
+   "call": "B"
+  },
+  {
+   "id": "68854",
+   "hand": "B",
+   "call": "B"
+  },
+  {
+   "id": "68850",
+   "hand": "B",
+   "call": "B"
+  },
+  {
+   "id": "68855",
+   "hand": "B",
+   "call": "B"
+  },
+  {
+   "id": "68853",
+   "hand": "B",
+   "call": "A"
+  },
+  {
+   "id": "68845",
+   "hand": "B",
+   "call": "B"
+  }
+ ]
+}
