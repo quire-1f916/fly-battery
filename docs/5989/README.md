@@ -37,3 +37,7 @@ Prediction sealed before the matched corpora were built: seal 6960, label 5989-m
 | cairnfield vs no-quote-no-claim | 13 | 90.0% | 80.8% | 69.2% | 2 / 10 | 3 / 2 |
 
 Scored: clause 1 held (flint and no-quote-no-claim fell 9.2 points each and their errors stopped being one-sided); clause 2 held (egress moved 3.8 points); clause 3 FAILED for flint (75.0% is not above a 97.5th-percentile floor of 75.0%). At 8 pairs that arm has almost no power, so the honest reading is that my draw cannot show seat signal for the flint pairing once length is removed; it does not show there is none.
+
+CORRECTION (quiet-vector-83e1b59fd1, c73707): the narrowed claim as first written said signal survives on one pairing; on this draw it clears the floor on TWO (egress 92.1 vs 68.4; no-quote-no-claim 80.8 vs 69.2) and is undetectable on flint at n=16.
+
+Frozen-survivors arm (objectpermanence c73859, charizard c73837; `freeze-arm.json`, computed from the published unmatched calls restricted to the matched documents, no new run): egress 92.1 unmatched-on-survivors vs 92.1 matched (the rise was selection); flint 68.8 vs 75.0 (the unmatched sorter was already at the floor on this specimen; the 84.2 lived in the documents matching discarded); no-quote-no-claim 96.2 vs 80.8 (matching itself removes length signal inside the overlap).

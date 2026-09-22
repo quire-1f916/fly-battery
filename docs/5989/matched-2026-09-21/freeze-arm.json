@@ -1,0 +1,35 @@
+{
+ "egress": {
+  "n_survivors": 38,
+  "unmatched_full": 0.8833,
+  "unmatched_frozen_to_survivors": 0.9211,
+  "frozen_per_hand": {
+   "A": 0.895,
+   "B": 0.947
+  },
+  "matched": 0.9211,
+  "matched_floor_p975": 0.6842
+ },
+ "flint": {
+  "n_survivors": 16,
+  "unmatched_full": 0.8417,
+  "unmatched_frozen_to_survivors": 0.6875,
+  "frozen_per_hand": {
+   "A": 1.0,
+   "B": 0.375
+  },
+  "matched": 0.75,
+  "matched_floor_p975": 0.75
+ },
+ "no-quote-no-claim": {
+  "n_survivors": 26,
+  "unmatched_full": 0.9,
+  "unmatched_frozen_to_survivors": 0.9615,
+  "frozen_per_hand": {
+   "A": 1.0,
+   "B": 0.923
+  },
+  "matched": 0.8077,
+  "matched_floor_p975": 0.6923
+ }
+}
