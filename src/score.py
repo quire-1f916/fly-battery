@@ -9,8 +9,9 @@ from itertools import groupby
 ALL = [json.loads(l) for l in open(sys.argv[1] if len(sys.argv) > 1 else 'results/runs.jsonl')]
 OUT = sys.argv[3] if len(sys.argv) > 3 else 'results/verdicts'   # v5: output prefix, so a rerun never overwrites an earlier version's verdict files
 STEP = float(sys.argv[2]) if len(sys.argv) > 2 else None   # v3: score the random arm at one sweep step (multiplier); real/shuffled rows have step None
-runs = [r for r in ALL if r.get('condition') != 'random' or r.get('step') == STEP or (STEP is None and r.get('step') is None)]
 import os
+JITTER = float(os.environ['FLY_JITTER']) if os.environ.get('FLY_JITTER') else None   # v6: score the random arm at one jitter width (rows carry 'jitter'); without it, jitter-scan rows are excluded
+runs = [r for r in ALL if r.get('condition') != 'random' or ((r.get('step') == STEP or (STEP is None and r.get('step') is None)) and (r.get('jitter') == JITTER))]
 B = json.load(open(os.environ.get('FLY_BATTERY', 'battery/battery.json')))
 def hz(row, k): r = row['readouts'][k]; return r['stimulus_hz'] - r['baseline_hz']
 def approach(row): return hz(row, 'DNp09') - hz(row, 'MDN')
@@ -46,9 +47,10 @@ for it in B['items']:
     for cond in ('real', 'shuffled', 'random'):
         s = stats(i, cond)
         if s is None or not s[0]: rec['conditions'][cond] = {'verdict': 'unreadable' if s is None else 'not-run'}; continue
-        k, m, p = sign_test(s[0]); rec['conditions'][cond] = {'direction_observed': f'{k}/{m}', 'p_one_sided': round(p, 4), 'holds': p < 0.01, 'mean_stats': [round(sum(v[j] for v in s[1]) / m, 3) for j in range(len(s[1][0]))]}
+        k, m, p = sign_test(s[0]); trials_c = sorted({r['trial'] for r in runs if r['item'] == i and r['condition'] == cond})
+        rec['conditions'][cond] = {'direction_observed': f'{k}/{m}', 'p_one_sided': round(p, 4), 'holds': p < 0.01, 'mean_stats': [round(sum(v[j] for v in s[1]) / m, 3) for j in range(len(s[1][0]))], 'hits': [t for t, o in zip(trials_c, s[0]) if o]}   # v6: per-trial hit set printed beside the count (#6394)
     c = rec['conditions']
-    V5 = 'v5' in B.get('battery', '')
+    V5 = 'v5' in B.get('battery', '') or 'v6' in B.get('battery', '')   # v6 scores by the v5 rule
     if 'v4' in B.get('battery','') or V5:
         # v4: one-sided Fisher on counts (real vs fake) at 0.01, both fakes; paired-magnitude sign test beside
         # v5: two-sided p and the sign printed beside; fake-beats-real at two-sided 0.01 is labelled 'inverted' (vish c66335)
@@ -80,5 +82,5 @@ for it in B['items']:
     else: rec['verdict'] = 'held' if (c['real']['holds'] and not c['shuffled']['holds'] and not c['random']['holds']) else 'failed'
     rec['real_only'] = bool(c.get('real', {}).get('holds'))
     out[str(i)] = rec
-json.dump(out, open(OUT + '.json' if STEP is None else OUT + '-step-%g.json' % STEP, 'w'), indent=1)
+json.dump(out, open(OUT + ('.json' if STEP is None else '-step-%g.json' % STEP) if JITTER is None else OUT + '-step-%g-jitter-%g.json' % (STEP, JITTER), 'w'), indent=1)
 for i, r in out.items(): print(i, r['name'], '->', r['verdict'], {k: (v.get('direction_observed'), v.get('holds')) for k, v in r['conditions'].items()})

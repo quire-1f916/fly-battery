@@ -34,13 +34,14 @@ def build_weights(coo, seed=None):
     M = sp.csr_matrix((w.astype(np.float32), (row, col)), shape=(n, n)); M.sum_duplicates(); M.eliminate_zeros()
     Mc = M.tocoo(); idx = torch.tensor(np.vstack([Mc.row, Mc.col]), dtype=torch.int64); v = torch.tensor(Mc.data, dtype=torch.float32)
     return torch.sparse_coo_tensor(idx, v, (n, n)).coalesce().to(dev)
-def params(kind, seed):
+def params(kind, seed, jitter=2.0):
+    """v6: `jitter` is the per-neuron multiplicative jitter factor j; each neuron's copy of the drawn parameters is scaled by logU[1/j, j]. j=2 is the v2..v5 twin; j=1 is no jitter. The same seed gives the same six global draws at every j, and the same per-neuron uniforms, so only the spread moves (cost-is-not-value c75802; registered c75853)."""
     P = dict(Tm=R['T_mbr_ms'], tau=R['tau_syn_ms'], dly=R['T_dly_ms'], ref=R['T_refractory_ms'], gap=R['V_threshold_mV'] - R['V_rest_mV'], wscale=1.0)
     jit = None
     if kind == 'random':
         rng = np.random.default_rng(2000 + seed)
         P = dict(Tm=rng.uniform(5, 80), tau=rng.uniform(1, 20), dly=rng.uniform(0.5, 5), ref=rng.uniform(1, 5), gap=rng.uniform(3, 20), wscale=float(np.exp(rng.uniform(np.log(0.05), np.log(1.5))) / R['W_syn_mV']))   # W_syn drawn logU[0.05,1.5] mV, expressed relative to the reference 0.275 mV. BUG until 2026-09-15: the division sat inside exp(), giving exp(u/0.275) in [2e-5, 4.4], so 7 of 10 sealed-seed draws fell below 0.01 and the twin was silent by construction.)
-        jit = torch.tensor(np.exp(rng.uniform(np.log(0.5), np.log(2), size=n)), dtype=torch.float32, device=dev)
+        jit = torch.tensor(np.exp(rng.uniform(np.log(1.0 / jitter), np.log(jitter), size=n)), dtype=torch.float32, device=dev)   # v6: width j (was fixed at 2)
     return P, jit
 def probe_rate(W, P, jit, seed, ms=300):
     """population spikes/s/neuron under a fixed probe: all ORN classes + LC4/LPLC2 + T4a forced at 30 Hz for `ms` after a 200 ms warmup."""
@@ -124,7 +125,7 @@ def item_plan(it):
           'HS_R': cls({'classes': ['HSE', 'HSN', 'HSS'], 'side': 'R'}), 'HS_L': cls({'classes': ['HSE', 'HSN', 'HSS'], 'side': 'L'}), 'DNa02_R': cls({'classes': ['DNa02'], 'side': 'R'}), 'DNa02_L': cls({'classes': ['DNa02'], 'side': 'L'})}
     return stim, ro
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('--items', default='1,2,3,4,5,6'); ap.add_argument('--trials', type=int, default=T['paired_trials']); ap.add_argument('--conditions', default='real,shuffled,random'); ap.add_argument('--smoke', action='store_true'); ap.add_argument('--rate-sweep', default=None, help='v3: comma-separated multipliers of the reference probe rate; the random twin is calibrated to each within 25%% and every step is scored'); ap.add_argument('--activity-match', action='store_true', help='v2: calibrate the random twin so its probe population rate is within [0.5,2]x the reference model'); ap.add_argument('--seed-material', default=None, help='sealhash:checkpointroot — derive trial seeds as sha256(seal || root || i) (vish, c60643)'); ap.add_argument('--out', default='results/runs.jsonl')
+    ap = argparse.ArgumentParser(); ap.add_argument('--items', default='1,2,3,4,5,6'); ap.add_argument('--trials', type=int, default=T['paired_trials']); ap.add_argument('--conditions', default='real,shuffled,random'); ap.add_argument('--smoke', action='store_true'); ap.add_argument('--rate-sweep', default=None, help='v3: comma-separated multipliers of the reference probe rate; the random twin is calibrated to each within 25%% and every step is scored'); ap.add_argument('--activity-match', action='store_true', help='v2: calibrate the random twin so its probe population rate is within [0.5,2]x the reference model'); ap.add_argument('--seed-material', default=None, help='sealhash:checkpointroot — derive trial seeds as sha256(seal || root || i) (vish, c60643)'); ap.add_argument('--jitter-sweep', default=None, help='v6: comma-separated per-neuron jitter factors j; the random twin is drawn at each j with the SAME six global draws per seed, calibrated to --jitter-target x the reference probe rate within 25%%, and every width is scored (cost-is-not-value c75802)'); ap.add_argument('--jitter-target', type=float, default=1.0, help='v6: the one frozen rate target for the jitter sweep (multiplier of the reference probe rate)'); ap.add_argument('--out', default='results/runs.jsonl')
     a = ap.parse_args()
     def trial_seed(i):
         if not a.seed_material: return i
@@ -133,9 +134,14 @@ def main():
     os.makedirs('results', exist_ok=True); prev = hashlib.sha256(open(BATTERY_FILE, 'rb').read()).hexdigest()
     W_real = build_weights(A); shuffles = {}
     ref_rate = None
-    if a.activity_match or a.rate_sweep:
+    jitters = [float(x) for x in a.jitter_sweep.split(',')] if a.jitter_sweep else None
+    if jitters is None and not a.rate_sweep and 'width_scan' in B and 'random' in conds:
+        # v6: the sealed battery file declares the width scan itself, so the Mac runner needs no new argument (NEXUS.md 8): rate frozen at B['width_scan']['target'], per-neuron jitter factors B['width_scan']['jitters']
+        jitters = [float(x) for x in B['width_scan']['jitters']]; a.jitter_target = float(B['width_scan']['target']); print('width scan from %s: jitters %s at target x%g' % (BATTERY_FILE, jitters, a.jitter_target), flush=True)
+    if a.activity_match or a.rate_sweep or jitters:
         Pref, _ = params('reference', 0); ref_rate = probe_rate(W_real, Pref, None, 0); print('reference probe rate %.3f spikes/s/neuron' % ref_rate, flush=True)
     steps = [float(x) for x in a.rate_sweep.split(',')] if a.rate_sweep else [None]
+    if jitters and a.rate_sweep: sys.exit('--jitter-sweep freezes the rate at --jitter-target; do not combine with --rate-sweep')
     t0 = time.time(); rows = 0
     with open(a.out, 'a') as fo:
         for it in items:
@@ -149,16 +155,23 @@ def main():
                         W, (P, jit) = shuffles[tr], params('reference', sd)
                     else:
                         W, (P, jit) = sign_permuted_weights(A, sd), params('random', sd)
-                        if a.activity_match and not a.rate_sweep:
+                        if a.activity_match and not a.rate_sweep and not jitters:
                             P, rate, iters = activity_match(W, P, jit, sd, ref_rate); P['probe_rate'] = round(rate, 3); P['ref_probe_rate'] = round(ref_rate, 3); P['match_iters'] = iters; print('  activity-matched trial %d: wscale %.3f probe %.3f (ref %.3f) in %d iters' % (tr, P['wscale'], rate, ref_rate, iters), flush=True)
-                    for step in (steps if cond == 'random' else [None]):
-                      if step is not None:
+                    axis = ([('jitter', j) for j in jitters] if jitters else [('step', st) for st in steps]) if cond == 'random' else [('step', None)]
+                    for kind, val in axis:
+                      if kind == 'jitter':
+                        # v6 width scan: same W (sign permutation by seed), same six global draws (same rng sequence), only the per-neuron spread moves; rate frozen at the target
+                        P0, jit0 = params('random', sd, jitter=val); P0, rate, iters = activity_match(W, P0, jit0, sd, ref_rate * a.jitter_target, lo=0.75, hi=1.25, iters=10)
+                        P0['probe_rate'] = round(rate, 3); P0['ref_probe_rate'] = round(ref_rate, 3); P0['target_multiplier'] = a.jitter_target; P0['jitter'] = val; P0['match_iters'] = iters
+                        print('  jitter trial %d j=%.3g: wscale %.4f probe %.3f (target %.3f) in %d iters' % (tr, val, P0['wscale'], rate, ref_rate * a.jitter_target, iters), flush=True)
+                      elif val is not None:
+                        step = val; jit0 = jit
                         P0 = dict(P); P0, rate, iters = activity_match(W, P0, jit, sd, ref_rate * step, lo=0.75, hi=1.25, iters=10); P0['probe_rate'] = round(rate, 3); P0['ref_probe_rate'] = round(ref_rate, 3); P0['target_multiplier'] = step; P0['match_iters'] = iters
                         print('  sweep trial %d x%.2f: wscale %.4f probe %.3f (target %.3f) in %d iters' % (tr, step, P0['wscale'], rate, ref_rate * step, iters), flush=True)
-                      else: P0 = P
+                      else: P0 = P; jit0 = jit
                       for sname, inputs in stim.items():
-                          t1 = time.time(); res = simulate(W, P0, jit, inputs, ro, seed=sd)
-                          row = dict(step=(P0.get('target_multiplier') if cond == 'random' else None), seed=sd, seed_material=a.seed_material, battery_file=BATTERY_FILE, battery_sha256=hashlib.sha256(open(BATTERY_FILE, 'rb').read()).hexdigest(), item=it['id'], condition=cond, trial=tr, stimulus=sname, params={k: (round(v, 4) if isinstance(v, float) else v) for k, v in P0.items()}, readouts=res, wall_s=round(time.time() - t1, 1), prev=prev)
+                          t1 = time.time(); res = simulate(W, P0, jit0, inputs, ro, seed=sd)
+                          row = dict(step=(P0.get('target_multiplier') if cond == 'random' else None), jitter=(P0.get('jitter') if cond == 'random' and jitters else None), seed=sd, seed_material=a.seed_material, battery_file=BATTERY_FILE, battery_sha256=hashlib.sha256(open(BATTERY_FILE, 'rb').read()).hexdigest(), item=it['id'], condition=cond, trial=tr, stimulus=sname, params={k: (round(v, 4) if isinstance(v, float) else v) for k, v in P0.items()}, readouts=res, wall_s=round(time.time() - t1, 1), prev=prev)
                           prev = hashlib.sha256(json.dumps(row, sort_keys=True).encode()).hexdigest(); row['sha256'] = prev
                           fo.write(json.dumps(row, sort_keys=True) + '\n'); fo.flush(); rows += 1
                           print('item %d %-8s trial %d %-12s %5.1fs  DNp09 %.2f MDN %.2f DNp01 %.2f pC1 %.2f pIP10 %.2f HS R/L %.2f/%.2f' % (it['id'], cond, tr, sname, row['wall_s'], res['DNp09']['stimulus_hz'], res['MDN']['stimulus_hz'], res['DNp01']['stimulus_hz'], res['pC1']['stimulus_hz'], res['pIP10']['stimulus_hz'], res['HS_R']['stimulus_hz'], res['HS_L']['stimulus_hz']), flush=True)
