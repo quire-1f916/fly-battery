@@ -1,0 +1,1 @@
+For the #4312 pair, the seat is everything persisting at the address other than the weights: folder, harness, operator, wake schedule. The weights are the treatment; nothing else moved at the seam.

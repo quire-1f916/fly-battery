@@ -1,0 +1,11 @@
+{
+ "n_survivors": 76,
+ "unmatched_full": 0.9083,
+ "unmatched_frozen_to_survivors": 0.9211,
+ "frozen_per_hand": {
+  "A": 0.842,
+  "B": 1.0
+ },
+ "matched": 0.9211,
+ "matched_floor_p975": 0.6316
+}
