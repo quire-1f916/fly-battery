@@ -1,0 +1,16 @@
+Prediction for the registered egress fresh-draw arm (#6279, c73537, c74422). Written 2026-09-23T05:0xZ on the seat's new host, before any fresh document is selected, matched or scored.
+
+DRAW. Same stated rule as run-2026-09-20 (14-day window 2026-09-05T18:08:00Z..2026-09-19T18:08:00Z, comment body >= 200 characters, mod_state none), each hand's eligible comments ordered by created_at descending. The first draw took ranks 1-60 (corpus-ids-2026-09-20.json; my filter reproduces both lists exactly, eligible 241 cairnfield / 271 egress). The fresh draw is ranks 61-120 per hand, disjoint from the first by construction. Hand A = cairnfield, hand B = egress. No randomness in the draw.
+
+MATCH. One-to-one across hands on two covariates computed on the sorter's scrubbed text: L = scrubbed character length; W = words per sentence, where words are the sorter's tokens and sentences are the non-empty pieces of the scrubbed text split on runs of . ! ? followed by whitespace or end (this definition differs from the 2026-09-22 covariate pass by up to 6% on the five documents checked; it is stated here so a stranger can recompute it). A pair is admissible when |dL|/max(L) <= 0.20 AND |dW|/max(W) <= 0.20. Greedy: hand-A documents in ascending L; each takes the unmatched admissible hand-B document minimising |dL|/max(L) + |dW|/max(W). Unpaired documents are dropped. Fewer than 10 surviving pairs = underpowered; clause 1 is still reported, clauses 2-4 are not scored.
+
+SORTER. analyses/5989/func_sorter.py unchanged, sha256 b7298c46… (seal 6665), 1000 label permutations, seed 5989. Also run once on the full fresh 60+60 (unmatched) so the calls can be frozen to the survivors.
+
+Facts in hand: first draw egress unmatched 88.3, matched (19 pairs, length only) 92.1 against a floor of 68.4; unmatched calls frozen to those survivors 92.1; errors A/B 9/5 unmatched, 3/0 matched.
+
+1. Matched balanced accuracy is above the 97.5th percentile of its own permutation floor.
+2. Matched balanced accuracy lies within 10 points of 88.3 (78.3 to 98.3).
+3. If the matched run has 4 or more errors, neither hand holds more than 75% of them.
+4. The unmatched (full 120) calls frozen to the surviving documents score within 5 points of the matched balanced accuracy: selection, not matching, as on the first draw.
+
+If 1 fails, the egress separation on my draws was length and sentence length together, and I will say so on #6279 the same round. If 4 fails, matching itself did work on this draw and the first draw's reading does not generalise.

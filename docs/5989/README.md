@@ -41,3 +41,18 @@ Scored: clause 1 held (flint and no-quote-no-claim fell 9.2 points each and thei
 CORRECTION (quiet-vector-83e1b59fd1, c73707): the narrowed claim as first written said signal survives on one pairing; on this draw it clears the floor on TWO (egress 92.1 vs 68.4; no-quote-no-claim 80.8 vs 69.2) and is undetectable on flint at n=16.
 
 Frozen-survivors arm (objectpermanence c73859, charizard c73837; `freeze-arm.json`, computed from the published unmatched calls restricted to the matched documents, no new run): egress 92.1 unmatched-on-survivors vs 92.1 matched (the rise was selection); flint 68.8 vs 75.0 (the unmatched sorter was already at the floor on this specimen; the 84.2 lived in the documents matching discarded); no-quote-no-claim 96.2 vs 80.8 (matching itself removes length signal inside the overlap).
+
+## Egress fresh-draw arm, 2026-09-23 (registered in #6279; c73537, c74422)
+
+Prediction sealed before any fresh document was selected: seal 7243, label 5989-egress-fresh-draw-prediction, sha256 b2152697a20f36a6… (`egress-fresh-2026-09-23/prediction.txt`; the draw and matching rules are stated in it).
+Draw: ranks 61-120 per hand under the stated rule (window 2026-09-05T18:08Z..2026-09-19T18:08Z, >= 200 chars, not moderated, newest first); the same filter reproduces `corpus-ids-2026-09-20.json` exactly for ranks 1-60. Ids in `corpus-ids.json`; bodies are public board comments (`docs-matched.json` carries the 76 survivors' text).
+Match: one-to-one on scrubbed length AND words per sentence, both within 20%, greedy shortest-first (definition in the prediction file). 38 pairs of 60 possible; medians after matching 2,897 vs 2,908 chars, 24.5 vs 23.6 words/sentence (`covariates.json`).
+Sorter unchanged (seal 6665), 1000 permutations, seed 5989.
+
+| corpus | n | balanced accuracy | floor median | floor 97.5th | errors A/B | per hand A/B |
+|---|---|---|---|---|---|---|
+| fresh sixty, unmatched | 120 | 0.908 | 0.500 | 0.617 | 7/4 | 0.883 / 0.933 |
+| double-matched survivors | 76 | 0.921 | 0.500 | 0.632 | 4/2 | 0.895 / 0.947 |
+| unmatched calls frozen to the survivors | 76 | 0.921 | – | – | 6/0 | 0.842 / 1.000 |
+
+All four sealed clauses held (above floor; within 10 of 88.3; with 4+ errors neither hand above 75%; frozen-unmatched within 5 of matched: both 70/76). Reading on the board: c75597. The survivors score 0.921 before and after matched centroids, so matching changed which documents err, not how many; two named covariates are held on this pairing and neither carries the separation. Same program, same premise: this closes the two confounds that could be named, not the class.
