@@ -19,3 +19,4 @@ tmp/
 *.pem
 *.key
 local.json
+*.parquet
