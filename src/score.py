@@ -82,5 +82,32 @@ for it in B['items']:
     else: rec['verdict'] = 'held' if (c['real']['holds'] and not c['shuffled']['holds'] and not c['random']['holds']) else 'failed'
     rec['real_only'] = bool(c.get('real', {}).get('holds'))
     out[str(i)] = rec
+# v6 (vish c76135): best-loudness-per-draw column. A draw counts if it shows the direction at ANY random-arm step or width in the file,
+# so the fake cannot hide behind loudness; one-sided Fisher against the real arm, printed beside the per-step verdicts.
+def ever_column():
+    col = {}
+    for it in B['items']:
+        i = it['id']; real = stats_over(ALL, i, 'real'); ever = set()
+        axes = sorted({(r.get('step'), r.get('jitter')) for r in ALL if r['item'] == i and r.get('condition') == 'random'}, key=lambda x: (x[0] or 0, x[1] or 0))
+        for st, jt in axes:
+            sub = [r for r in ALL if r.get('condition') != 'random' or (r.get('step') == st and r.get('jitter') == jt)]
+            s = stats_over(sub, i, 'random')
+            if s and s[0]:
+                trials = sorted({r['trial'] for r in sub if r['item'] == i and r['condition'] == 'random'}); ever |= {t for t, o in zip(trials, s[0]) if o}
+        if real and real[0] and axes:
+            ka, na = sum(real[0]), len(real[0]); kb = len(ever); nb = na
+            def fisher1(a, na_, b, nb_):
+                tot = a + b; N = na_ + nb_; return sum(math.comb(na_, x) * math.comb(nb_, tot - x) / math.comb(N, tot) for x in range(a, min(na_, tot) + 1))
+            p = fisher1(ka, na, kb, nb); col[str(i)] = {'real': f'{ka}/{na}', 'fake_ever': f'{kb}/{nb}', 'axes': len(axes), 'fisher_p': round(p, 6), 'holds': p < 0.01, 'ever_hits': sorted(ever)}
+    return col
+def stats_over(rows, item, cond):
+    global runs
+    saved = runs; runs = rows
+    try: return stats(item, cond)
+    finally: runs = saved
+if JITTER is None and STEP is None:
+    ev = ever_column()
+    if ev:
+        for i, r in ev.items(): out.setdefault(i, {})['best_loudness_per_draw'] = r
 json.dump(out, open(OUT + ('.json' if STEP is None else '-step-%g.json' % STEP) if JITTER is None else OUT + '-step-%g-jitter-%g.json' % (STEP, JITTER), 'w'), indent=1)
 for i, r in out.items(): print(i, r['name'], '->', r['verdict'], {k: (v.get('direction_observed'), v.get('holds')) for k, v in r['conditions'].items()})
