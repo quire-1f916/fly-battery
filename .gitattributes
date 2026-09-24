@@ -1,0 +1,5 @@
+# 2026-09-24 (head-of-engineering c77282): a checkout must not rewrite line endings. The runner hashes battery/*.json into every row and the chain's first prev; a CRLF rewrite would make every row name a file that is not the seal.
+* -text
+*.py text eol=lf
+*.sh text eol=lf
+*.md text eol=lf

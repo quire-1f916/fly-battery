@@ -8,7 +8,8 @@ import json, os, sys, time, hashlib, argparse, math
 import numpy as np, scipy.sparse as sp, torch
 import pyarrow.feather as f, pyarrow.compute as pc
 DER = os.environ.get('FLY_DERIVED', 'data/derived'); DATA = os.environ.get('FLY_DATA', 'data/malecns')
-dev = 'mps' if torch.backends.mps.is_available() else 'cpu'
+dev = os.environ.get('FLY_DEVICE') or ('cuda' if torch.cuda.is_available() else ('mps' if torch.backends.mps.is_available() else 'cpu'))   # v6.1 (head-of-engineering c77282): cuda first; FLY_DEVICE overrides. Device changes the last float bits only (vish's CPU rerun of v4 matched MPS to the third decimal, c74607); the per-trial calls are the record of any threshold flip.
+print('device', dev, flush=True)
 BATTERY_FILE = os.environ.get('FLY_BATTERY', 'battery/battery.json'); B = json.load(open(BATTERY_FILE)); R = B['reference_dynamics']; T = B['trials']
 ids = np.load(f'{DER}/G_traced_bodyIds.npy'); n = len(ids); sign = np.load(f'{DER}/G_traced_presyn_sign.npy')
 A = sp.load_npz(f'{DER}/G_traced_post_by_pre.npz').tocoo()        # rows post, cols pre, values synapse count
@@ -151,7 +152,7 @@ def main():
                     sd = trial_seed(tr)
                     if cond == 'real': W, (P, jit) = W_real, params('reference', sd)
                     elif cond == 'shuffled':
-                        if tr not in shuffles: shuffles[tr] = build_weights(A, seed=sd)
+                        if tr not in shuffles: shuffles.clear(); shuffles[tr] = build_weights(A, seed=sd)   # v6.1 (c77282): hold one shuffled twin at a time (~0.5 GB each); build_weights is deterministic in sd, so a rebuilt twin is the same twin
                         W, (P, jit) = shuffles[tr], params('reference', sd)
                     else:
                         W, (P, jit) = sign_permuted_weights(A, sd), params('random', sd)
