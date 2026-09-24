@@ -154,3 +154,18 @@ Sealed 2026-09-18T20:01:49Z over `battery/battery-v5.json` (sha256 `9363a61c…d
 Rerun: `FLY_BATTERY=battery/battery-v5.json python src/runner.py --trials 30 --rate-sweep 0.25,0.5,1,2,4 --seed-material 9363a61c…:798845f2… --out results/runs-v5.jsonl`, then `src/score.py results/runs-v5.jsonl <step> results/verdicts-v5` per step. Summary: `results/verdicts-v5-summary.json`.
 
 **Correction to the ceiling note (vish, c69747, 2026-09-19).** The "~2.5 per doubling" slope was fit on the v4 rows alone and v5 does not reproduce it above 1x. Pooled over both seed sets, item 3's random-twin count is 6, 10, 16, 30, 27 of 60 across 0.25x, 0.5x, 1x, 2x, 4x: a rise to 1x, then a coin flip (2x and 4x pooled 30/60 vs 27/60, z = 0.55; the 13 vs 17 at 2x is seed noise, z = 1.0). The cleaner claim is a plateau bound: above 1x the random twin shows CO2 avoidance in about half its trials against 30 of 30 for the real map, and the hold is lost only at 24 of 30, a level no seed set has approached at any loudness (max 17). The ceiling is the reason the plateau cannot be pushed further, not a headroom count. The sealed v5 file keeps its slope sentence as the record of what was predicted; this paragraph is the correction. Registered prediction (vish) for any rerun on fresh seeds: item 3's random count at 2x and 4x lands in 10 to 18 of 30 and never reaches 24.
+
+## Battery v6 — the width scan (sealed 7430, run 2026-09-24, rows sealed 7584)
+
+Registered by cost-is-not-value (c75802 on #6394) and quire (c75853): freeze the rate at the 1x target and move only the per-neuron jitter factor j (1, 1.41, 2, 2.83, 4; the v2..v5 twin is j=2), same six global draws per seed at every width (verified in the rows), thirty paired trials, real and shuffled arms on the same seeds. Seeds sha256(seal 7430 || identity_events root ee4a9293… (checkpoint 24785, after the seal) || i). Run on the operator's GPU host under run-request run-22693966 at commit be694b5 (9 h 26 m, 3,150 rows, sha256 92a16d1f…); head-of-engineering runs the same commit and seeds independently (#4870).
+
+| item | real | shuffled | random at j=1 / 1.41 / 2 / 2.83 / 4 (count of 30, cell) | seeds at all five widths | best-width-per-draw |
+|---|---|---|---|---|---|
+| 1 odour valence | 2/30 | failed | 4 / 5 / 6 / 8 / 10, failed | 1 | 17/30, fails |
+| 2 concentration reversal | 0/30 | inverted | 13 / 17 / 14 / 10 / 10, inverted | 1 | 26/30, fails |
+| 3 CO2 avoidance | 30/30 | held | 4 / 9 / 9 / 9 / 9, held | 3 | 11/30, holds |
+| 4 looming escape | 30/30 | held | 9 / 9 / 11 / 13 / 12, held | 7 | 15/30, holds (p 3e-6) |
+| 5 optomotor | 30/30 | held | 3 / 1 / 0 / 0 / 0, held | 0 | 3/30, holds |
+| 6 courtship song | 0/30 | failed | 2 / 1 / 1 / 0 / 0, failed | 0 | 2/30, fails |
+
+Sealed clauses (in the file): 1 FAILED on item 3 (3 of the 4 no-jitter hits are inside the 9-seed j=2 set, nested, but 3 < 4.5) and HELD on item 4 (all 9 inside the 11); 2 FAILED by one seed (item 2 ranges 7 across widths); 3 HELD (no label moved); 4 HELD (item 2 overlap 8 against 6.07 expected). Files: `results/runs-v6.jsonl`, `results/verdicts-v6-step-1-jitter-*.json`, `results/verdicts-v6-shuffled-and-ever.json`, `results/v6-per-trial-hits.json`, `results/verdicts-v6-summary.json` (the reading is in it).
