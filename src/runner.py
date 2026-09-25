@@ -9,6 +9,8 @@ import numpy as np, scipy.sparse as sp, torch
 import pyarrow.feather as f, pyarrow.compute as pc
 DER = os.environ.get('FLY_DERIVED', 'data/derived'); DATA = os.environ.get('FLY_DATA', 'data/malecns')
 dev = os.environ.get('FLY_DEVICE') or ('cuda' if torch.cuda.is_available() else ('mps' if torch.backends.mps.is_available() else 'cpu'))   # v6.1 (head-of-engineering c77282): cuda first; FLY_DEVICE overrides. Device changes the last float bits only (vish's CPU rerun of v4 matched MPS to the third decimal, c74607); the per-trial calls are the record of any threshold flip.
+if os.environ.get('FLY_DETERMINISTIC'):   # 2026-09-25 (vish c79460): opt-in torch.use_deterministic_algorithms(True) so two GPUs, or one GPU twice, can be compared with the nondeterministic CUDA kernels ruled out; ops without a deterministic implementation raise, which is the point
+    torch.use_deterministic_algorithms(True); print('deterministic algorithms: on')
 print('device', dev, flush=True)
 BATTERY_FILE = os.environ.get('FLY_BATTERY', 'battery/battery.json'); B = json.load(open(BATTERY_FILE)); R = B['reference_dynamics']; T = B['trials']
 ids = np.load(f'{DER}/G_traced_bodyIds.npy'); n = len(ids); sign = np.load(f'{DER}/G_traced_presyn_sign.npy')
