@@ -1,0 +1,184 @@
+{
+ "rows": "results/runs-v6.jsonl",
+ "other": "/home/quire/board/1f916/tmp/third-seat/runs-v6-third-seat.jsonl",
+ "calls": 1260,
+ "ties_at_bar": 267,
+ "by_arm": {
+  "real": {
+   "n": 180,
+   "median_abs_margin_hz": 6.752,
+   "share_under_1hz": 0.294
+  },
+  "shuffled": {
+   "n": 180,
+   "median_abs_margin_hz": 4.514,
+   "share_under_1hz": 0.367
+  },
+  "random": {
+   "n": 900,
+   "median_abs_margin_hz": 5.208,
+   "share_under_1hz": 0.329
+  }
+ },
+ "by_item": {
+  "1": {
+   "n": 210,
+   "median_abs_margin_hz": 1.25,
+   "under_1hz": 96
+  },
+  "2": {
+   "n": 210,
+   "median_abs_margin_hz": 1.25,
+   "under_1hz": 103
+  },
+  "3": {
+   "n": 210,
+   "median_abs_margin_hz": 1.25,
+   "under_1hz": 104
+  },
+  "4": {
+   "n": 210,
+   "median_abs_margin_hz": 40.0,
+   "under_1hz": 6
+  },
+  "5": {
+   "n": 210,
+   "median_abs_margin_hz": 3.333,
+   "under_1hz": 71
+  },
+  "6": {
+   "n": 210,
+   "median_abs_margin_hz": 21.603,
+   "under_1hz": 35
+  }
+ },
+ "bins": [
+  {
+   "margin_hz": [
+    0,
+    1
+   ],
+   "calls": 415,
+   "flips": 7
+  },
+  {
+   "margin_hz": [
+    1,
+    2
+   ],
+   "calls": 86,
+   "flips": 0
+  },
+  {
+   "margin_hz": [
+    2,
+    5
+   ],
+   "calls": 94,
+   "flips": 0
+  },
+  {
+   "margin_hz": [
+    5,
+    10
+   ],
+   "calls": 129,
+   "flips": 0
+  },
+  {
+   "margin_hz": [
+    10,
+    1e+18
+   ],
+   "calls": 536,
+   "flips": 0
+  }
+ ],
+ "flips": [
+  {
+   "call": [
+    "random",
+    2,
+    4.0,
+    7
+   ],
+   "abs_margin_hz": 0.0,
+   "rank_of_1260": 86
+  },
+  {
+   "call": [
+    "random",
+    2,
+    1.0,
+    18
+   ],
+   "abs_margin_hz": 0.4167,
+   "rank_of_1260": 310
+  },
+  {
+   "call": [
+    "random",
+    2,
+    2.83,
+    22
+   ],
+   "abs_margin_hz": 0.4167,
+   "rank_of_1260": 313
+  },
+  {
+   "call": [
+    "random",
+    2,
+    1.41,
+    29
+   ],
+   "abs_margin_hz": 0.4167,
+   "rank_of_1260": 341
+  },
+  {
+   "call": [
+    "random",
+    2,
+    2.83,
+    4
+   ],
+   "abs_margin_hz": 0.4167,
+   "rank_of_1260": 346
+  },
+  {
+   "call": [
+    "random",
+    2,
+    1.0,
+    7
+   ],
+   "abs_margin_hz": 0.8333,
+   "rank_of_1260": 382
+  },
+  {
+   "call": [
+    "shuffled",
+    1,
+    null,
+    4
+   ],
+   "abs_margin_hz": 0.8333,
+   "rank_of_1260": 388
+  }
+ ],
+ "calls_with_any_differing_readout": {
+  "by_item": {
+   "1": 88,
+   "2": 102,
+   "3": 23,
+   "4": 93,
+   "5": 88,
+   "6": 66
+  },
+  "by_arm": {
+   "real": 30,
+   "shuffled": 104,
+   "random": 326
+  }
+ }
+}
