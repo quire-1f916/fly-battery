@@ -27,14 +27,32 @@ def margin(item,g):
         ft,cv,no=g['female_taste'],g['cva'],g['none']; return min(hz(ft,'pC1')-hz(no,'pC1'), hz(ft,'pIP10')-hz(no,'pIP10'), hz(no,'pC1')-hz(cv,'pC1'))
 A=load(args[0]); B=load(args[1]) if len(args)>1 else None
 calls={k:margin(k[1],g) for k,g in A.items()}
+def parts(item,g):
+    if item==1: a,n,p=ap(g['attractant']),ap(g['neutral']),ap(g['repellent']); return [(a,n),(n,p)]
+    if item==2: return [(ap(g['low']),ap(g['high']))]
+    if item==3: return [(ap(g['none']),ap(g['co2']))]
+    if item==4: return [(hz(g['loom'],'DNp01'),hz(g['control_visual'],'DNp01'))]
+    if item==5:
+        ra,rb=(g['rot_a'],g['rot_b']) if 'rot_a' in g else (g['right_a'],g['right_b'])
+        return [(hz(ra,'HS_R'),hz(ra,'HS_L')),(hz(rb,'HS_R'),hz(rb,'HS_L')),(hz(ra,'DNa02_R'),hz(ra,'DNa02_L')),(hz(rb,'DNa02_R'),hz(rb,'DNa02_L'))]
+    if item==6: ft,cv,no=g['female_taste'],g['cva'],g['none']; return [(hz(ft,'pC1'),hz(no,'pC1')),(hz(ft,'pIP10'),hz(no,'pIP10')),(hz(no,'pC1'),hz(cv,'pC1'))]
+# 2026-09-26 (Meridian c80273): split the near-bar population. A tie (margin exactly 0) is decided by the predicate's strict comparison, not by the data;
+# zero-vs-zero ties are silent circuits, equal-nonzero ties are identical rates. Both are reported apart from nonzero gaps under 1 Hz.
+def tie_kind(k):
+    if abs(calls[k])!=0: return None
+    ps=parts(k[1],A[k]); l,r=min(ps,key=lambda lr:abs(lr[0]-lr[1])); return 'zero_zero' if (l==0 and r==0) else 'equal_nonzero'
+kinds={k:tie_kind(k) for k in calls}
 absm={k:abs(v) for k,v in calls.items()}; order=sorted(absm,key=absm.get); rank={k:i+1 for i,k in enumerate(order)}
-res={'rows':args[0],'other':args[1] if B else None,'calls':len(calls),'ties_at_bar':sum(1 for v in absm.values() if v==0),
+res={'rows':args[0],'other':args[1] if B else None,'calls':len(calls),'ties_at_bar':sum(1 for v in absm.values() if v==0),'ties_zero_zero':sum(1 for v in kinds.values() if v=='zero_zero'),'ties_equal_nonzero':sum(1 for v in kinds.values() if v=='equal_nonzero'),'nonzero_under_1hz':sum(1 for k in absm if 0<absm[k]<1),
+     'near_bar_by_arm':{arm:{'n':len(ks),'zero_zero':sum(1 for k in ks if kinds[k]=='zero_zero'),'equal_nonzero':sum(1 for k in ks if kinds[k]=='equal_nonzero'),'nonzero_under_1hz':sum(1 for k in ks if 0<absm[k]<1)} for arm in ('real','shuffled','random') for ks in [[k for k in absm if k[0]==arm]]},
+     'near_bar_by_item':{it:{'zero_zero':sum(1 for k in ks if kinds[k]=='zero_zero'),'equal_nonzero':sum(1 for k in ks if kinds[k]=='equal_nonzero'),'nonzero_under_1hz':sum(1 for k in ks if 0<absm[k]<1)} for it in range(1,7) for ks in [[k for k in absm if k[1]==it]]},
      'by_arm':{arm:{'n':len(v),'median_abs_margin_hz':round(statistics.median(v),3),'share_under_1hz':round(sum(1 for x in v if x<1)/len(v),3)} for arm in ('real','shuffled','random') for v in [[absm[k] for k in absm if k[0]==arm]]},
      'by_item':{it:{'n':len(v),'median_abs_margin_hz':round(statistics.median(v),3),'under_1hz':sum(1 for x in v if x<1)} for it in range(1,7) for v in [[absm[k] for k in absm if k[1]==it]]},
      'bins':[{'margin_hz':[lo,hi],'calls':sum(1 for k in absm if lo<=absm[k]<hi)} for lo,hi in [(0,1),(1,2),(2,5),(5,10),(10,None)] for hi in [hi if hi else 1e18]]}
 if B:
     flips=[k for k in calls if (calls[k]>0)!=(margin(k[1],B[k])>0)]
-    res['flips']=[{'call':[k[0],k[1],k[2],k[3]],'abs_margin_hz':round(absm[k],4),'rank_of_%d'%len(calls):rank[k]} for k in sorted(flips,key=lambda k:absm[k])]
+    res['flips']=[{'call':[k[0],k[1],k[2],k[3]],'abs_margin_hz':round(absm[k],4),'rank_of_%d'%len(calls):rank[k],'tie':kinds[k]} for k in sorted(flips,key=lambda k:absm[k])]
+    res['flips_by_population']={'zero_zero':sum(1 for k in flips if kinds[k]=='zero_zero'),'equal_nonzero':sum(1 for k in flips if kinds[k]=='equal_nonzero'),'nonzero_under_1hz':sum(1 for k in flips if 0<absm[k]<1),'over_1hz':sum(1 for k in flips if absm[k]>=1)}
     for b in res['bins']: lo,hi=b['margin_hz']; b['flips']=sum(1 for k in flips if lo<=absm[k]<hi)
     drift=collections.Counter(); 
     for k in A:

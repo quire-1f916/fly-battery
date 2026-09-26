@@ -3,6 +3,61 @@
  "other": "/home/quire/board/1f916/tmp/third-seat/runs-v6-third-seat.jsonl",
  "calls": 1260,
  "ties_at_bar": 267,
+ "ties_zero_zero": 215,
+ "ties_equal_nonzero": 52,
+ "nonzero_under_1hz": 148,
+ "near_bar_by_arm": {
+  "real": {
+   "n": 180,
+   "zero_zero": 45,
+   "equal_nonzero": 0,
+   "nonzero_under_1hz": 8
+  },
+  "shuffled": {
+   "n": 180,
+   "zero_zero": 36,
+   "equal_nonzero": 2,
+   "nonzero_under_1hz": 28
+  },
+  "random": {
+   "n": 900,
+   "zero_zero": 134,
+   "equal_nonzero": 50,
+   "nonzero_under_1hz": 112
+  }
+ },
+ "near_bar_by_item": {
+  "1": {
+   "zero_zero": 57,
+   "equal_nonzero": 2,
+   "nonzero_under_1hz": 37
+  },
+  "2": {
+   "zero_zero": 30,
+   "equal_nonzero": 15,
+   "nonzero_under_1hz": 58
+  },
+  "3": {
+   "zero_zero": 102,
+   "equal_nonzero": 0,
+   "nonzero_under_1hz": 2
+  },
+  "4": {
+   "zero_zero": 3,
+   "equal_nonzero": 2,
+   "nonzero_under_1hz": 1
+  },
+  "5": {
+   "zero_zero": 15,
+   "equal_nonzero": 33,
+   "nonzero_under_1hz": 23
+  },
+  "6": {
+   "zero_zero": 8,
+   "equal_nonzero": 0,
+   "nonzero_under_1hz": 27
+  }
+ },
  "by_arm": {
   "real": {
    "n": 180,
@@ -103,7 +158,8 @@
     7
    ],
    "abs_margin_hz": 0.0,
-   "rank_of_1260": 86
+   "rank_of_1260": 86,
+   "tie": "equal_nonzero"
   },
   {
    "call": [
@@ -113,7 +169,8 @@
     18
    ],
    "abs_margin_hz": 0.4167,
-   "rank_of_1260": 310
+   "rank_of_1260": 310,
+   "tie": null
   },
   {
    "call": [
@@ -123,7 +180,8 @@
     22
    ],
    "abs_margin_hz": 0.4167,
-   "rank_of_1260": 313
+   "rank_of_1260": 313,
+   "tie": null
   },
   {
    "call": [
@@ -133,7 +191,8 @@
     29
    ],
    "abs_margin_hz": 0.4167,
-   "rank_of_1260": 341
+   "rank_of_1260": 341,
+   "tie": null
   },
   {
    "call": [
@@ -143,7 +202,8 @@
     4
    ],
    "abs_margin_hz": 0.4167,
-   "rank_of_1260": 346
+   "rank_of_1260": 346,
+   "tie": null
   },
   {
    "call": [
@@ -153,7 +213,8 @@
     7
    ],
    "abs_margin_hz": 0.8333,
-   "rank_of_1260": 382
+   "rank_of_1260": 382,
+   "tie": null
   },
   {
    "call": [
@@ -163,9 +224,16 @@
     4
    ],
    "abs_margin_hz": 0.8333,
-   "rank_of_1260": 388
+   "rank_of_1260": 388,
+   "tie": null
   }
  ],
+ "flips_by_population": {
+  "zero_zero": 0,
+  "equal_nonzero": 1,
+  "nonzero_under_1hz": 6,
+  "over_1hz": 0
+ },
  "calls_with_any_differing_readout": {
   "by_item": {
    "1": 88,
