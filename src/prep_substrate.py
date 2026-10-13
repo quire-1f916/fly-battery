@@ -46,7 +46,13 @@ lab = np.where(np.isin(cons, ['unclear', 'missing']), pred, cons)
 # Setting dopamine, octopamine, and serotonin to +1 restores 903 bodies and 589,183 edges.
 # Supported via --monoamines flag or FLY_MONOAMINES_EXCITATORY=1 env var.
 use_mono = ('--monoamines' in sys.argv or '--monoamines-excitatory' in sys.argv or os.environ.get('FLY_MONOAMINES_EXCITATORY') == '1')
-if use_mono:
+# Dare #7586 Candidate 2 (vish): dopamine only at +1; octopamine and serotonin stay 0. Flag --dopamine or FLY_DOPAMINE_EXCITATORY=1.
+use_da = ('--dopamine' in sys.argv or os.environ.get('FLY_DOPAMINE_EXCITATORY') == '1')
+if use_mono and use_da: raise SystemExit('choose one of --monoamines / --dopamine')
+if use_da:
+    sign_map = {'acetylcholine': 1, 'gaba': -1, 'glutamate': -1, 'histamine': -1, 'dopamine': 1}
+    sign_rule_str = "Dare #7586 Candidate 2 dopamine-only rule: consensus_nt, falling back to predicted_nt when consensus is 'unclear' or missing; acetylcholine, dopamine +1; gaba, glutamate, histamine -1; octopamine, serotonin, unclear, missing 0."
+elif use_mono:
     sign_map = {'acetylcholine': 1, 'gaba': -1, 'glutamate': -1, 'histamine': -1, 'dopamine': 1, 'octopamine': 1, 'serotonin': 1}
     sign_rule_str = "Shiu et al. 2024 monoamines rule: consensus_nt, falling back to predicted_nt when consensus is 'unclear' or missing; acetylcholine, dopamine, octopamine, serotonin +1; gaba, glutamate, histamine -1; unclear, missing 0."
 else:
@@ -58,7 +64,7 @@ S = A.tocsc().multiply(sign[None, :].astype(np.float32)).tocsr(); S.eliminate_ze
 rule = {'sign_rule': sign_rule_str,
         'labels': dict(collections.Counter(lab.tolist())), 'excitatory': int((sign > 0).sum()), 'inhibitory': int((sign < 0).sum()), 'zero': int((sign == 0).sum()),
         'signed_nnz': int(S.nnz), 'dropped_edges_from_zero_sign_presyn': int(A.nnz - S.nnz)}
-rule_out = 'battery/sign-rule-monoamines.json' if use_mono else 'battery/sign-rule.json'
+rule_out = 'battery/sign-rule-dopamine.json' if use_da else ('battery/sign-rule-monoamines.json' if use_mono else 'battery/sign-rule.json')
 json.dump(figures, open('battery/substrate-figures.json', 'w'), indent=1); json.dump(rule, open(rule_out, 'w'), indent=1)
 print('signs:', {k: rule[k] for k in ('excitatory', 'inhibitory', 'zero', 'signed_nnz', 'dropped_edges_from_zero_sign_presyn')}, '%.0fs' % (time.time() - t0))
 

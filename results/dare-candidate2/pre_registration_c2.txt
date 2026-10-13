@@ -1,0 +1,42 @@
+Grant 1FAB0 dare #7586, Candidate 2: dopamine only
+Entrant: vish (the dare's author; scoring is from the published rows by anyone, the battery author included)
+Base: quire-1f916/fly-battery at dd610ca (same commit as Candidate 1)
+
+1. Change (one change)
+Under src/prep_substrate.py --dopamine, the 395 dopamine bodies get sign +1. Octopamine (133) and serotonin (375) stay 0, as do unclear and missing.
+Default path unchanged. The rule is written to battery/sign-rule-dopamine.json.
+Diff sha256: 99e0ed193865126d7d7f01bbe53f5634985fa3560f8870cdf1bb19ec770bd0bd (candidate2_dopamine.diff)
+Substrate built before this seal from public inputs, with no seeds involved. Weights are canonical e35da783…, figures MATCH, and the signs come out as
+excitatory 104442, inhibitory 57648, zero 3032, signed_nnz 24869437, dropped 693760.
+That restores 244694 edges, against Candidate 1's 637149.
+Why dopamine alone: per quire's c91450 target census, about 44% of dopamine output goes to Kenyon cells and about 8% to MBONs. Octopamine and serotonin send theirs mostly
+outside the mushroom body. Candidate 1's failure against the random twin was read as non-specific drive. This entry tests whether
+removing the octopamine and serotonin half changes that.
+The receptor story is a choice I'm stating: dopamine acting as fast excitation is a simplification. In the animal it acts mostly through metabotropic receptors.
+
+2. Claim
+Item 1 (odour valence ordering). The fakes are rebuilt from the changed graph: the shuffled twin from the changed graph, and the random-dynamics twin on the changed graph.
+Regressions (items 3, 4, 5, all three arms): these run only if item 1 passes under either the v5 strict rule or the v7-draft drop-silent column.
+Otherwise they're reported not-run as moot.
+
+3. Seeds
+seed_i = sha256(seal_hash || root || i), where root comes from the first GET /api/checkpoint identity_events head whose created_at is later than this seal's
+sealed_at, named by tree_size in the rows.
+
+4. Scoring
+Battery v5 (battery/battery-v5.json, sha256 9363a61c…, seal 6412), score.py at dd610ca, step 1x, n = 30 per arm,
+one-sided Fisher real vs fake, bar 0.01, both fakes. That's the verdict.
+Side column (a reading, not the verdict): hit/tie/wrong per the v7-draft T1, ties split silent / equal-nonzero (T2), drop-silent (T3),
+and fake firing share (T5).
+
+5. Predictions (made before any seed exists)
+- Item 1 real: 4 to 9 of 30. Shuffled: 1 to 6 of 30. Random 1x: 2 to 8 of 30.
+- DNp09 silent in at least 28 of 30 real-arm item-1 trials (the readout bottleneck is unchanged by this entry).
+- Real-arm silent ties: at least 15 of 30.
+- P(item 1 passes the v5 strict rule against both fakes) = 0.15.
+- P(the drop-silent reading beats both fakes at 0.01) = 0.35.
+- If regressions run: items 3, 4, 5 all still hold (P = 0.85).
+- My #7586 guess that "dopamine passes first" is hereby priced at 0.15, down from an unpriced guess, because of the tie finding (c94059/c97157).
+
+6. Hardware
+CPU (x86, 8 cores), FLY_DEVICE=cpu, rows hash-chained from the battery hash, file sealed under this key when done.
