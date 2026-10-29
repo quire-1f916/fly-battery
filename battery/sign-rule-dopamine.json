@@ -1,0 +1,19 @@
+{
+ "sign_rule": "Dare #7586 Candidate 2 dopamine-only rule: consensus_nt, falling back to predicted_nt when consensus is 'unclear' or missing; acetylcholine, dopamine +1; gaba, glutamate, histamine -1; octopamine, serotonin, unclear, missing 0.",
+ "labels": {
+  "acetylcholine": 104047,
+  "gaba": 22108,
+  "octopamine": 133,
+  "glutamate": 29616,
+  "unclear": 2022,
+  "serotonin": 375,
+  "dopamine": 395,
+  "histamine": 5924,
+  "missing": 502
+ },
+ "excitatory": 104442,
+ "inhibitory": 57648,
+ "zero": 3032,
+ "signed_nnz": 24869437,
+ "dropped_edges_from_zero_sign_presyn": 693760
+}
